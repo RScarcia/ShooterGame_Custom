@@ -1,6 +1,6 @@
 # ShooterGame_Custom
 
-Custom version of Shooter Game example project of UE4.
+Custom version of UE4 Shooter Game example project, developed for a Multiplayer environment.
 New Features:
 * Teleport
 * Jetpack
@@ -12,6 +12,7 @@ Added classes are:
 
 Some minor changes inside ShooterHUD class, to display the percentage of jetpack fuel.
 ```c++
+void AShooterHUD::DrawHUD() {
 AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
   if (sc && sc->IsAlive()) {
     // Get the movement component, and check if its the correct class
@@ -23,4 +24,9 @@ AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
       Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, 150);
     }
   }
+......
+......
+}
 ```
+
+Inside PlayerPawn blueprint

@@ -11,7 +11,7 @@ Added classes are:
 * **MyShooterCharacter** (.h and .cpp): extension of ShooterCharacter class, manages teleport, walljump and some functions of the jetpack feature.
 * **MyShooterCharacterMovement** (.h and cpp): extension of ShooterCharacterMovement class, handles everything concerning the jetpack movement.
 
-Some minor changes inside ShooterHUD class, to display the percentage of jetpack fuel.
+Some minor changes inside **ShooterHUD** class, to display the percentage of jetpack fuel.
 ```c++
 void AShooterHUD::DrawHUD() {
   AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
@@ -30,4 +30,6 @@ void AShooterHUD::DrawHUD() {
 }
 ```
 
-Inside PlayerPawn blueprint:
+Inside **PlayerPawn** blueprint:
+
+<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/blueprint.PNG" width="900">

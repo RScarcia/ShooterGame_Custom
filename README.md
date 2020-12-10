@@ -1,6 +1,7 @@
 # ShooterGame_Custom
 
 Custom version of UE4 Shooter Game example project, developed for a Multiplayer environment.
+
 New Features:
 * Teleport
 * Jetpack
@@ -29,4 +30,4 @@ AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
 }
 ```
 
-Inside PlayerPawn blueprint
+Inside PlayerPawn blueprint:

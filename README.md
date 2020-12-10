@@ -7,8 +7,8 @@ New Features:
 * WallJump
 
 Added classes are:
-* MyShooterCharacter (.h and .cpp): extension of ShooterCharacter class, manages teleport, walljump and some functions of the jetpack feature.
-* MyShooterCharacterMovement (.h and cpp): extension of ShooterCharacterMovement class, handles everithing concerning the jetpack movement.
+* **MyShooterCharacter** (.h and .cpp): extension of ShooterCharacter class, manages teleport, walljump and some functions of the jetpack feature.
+* **MyShooterCharacterMovement** (.h and cpp): extension of ShooterCharacterMovement class, handles everithing concerning the jetpack movement.
 
 Some minor changes inside ShooterHUD class, to display the percentage of jetpack fuel.
 ```c++

@@ -3,6 +3,13 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# UE4 Project directories to ignore
+/Binaries/
+/DerivedDataCache/
+/Intermediate/
+/Saved/
+/Build/
+
 # User-specific files
 *.rsuser
 *.suo

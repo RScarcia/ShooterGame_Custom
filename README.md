@@ -22,7 +22,7 @@ void AShooterHUD::DrawHUD() {
         // calculate the percentage of fuel the jetpack has
         int Energy = movecmp->Jetpackfuel / movecmp->JetpackMaxFuel * 100;
         // and draw the number to the screen, left side.
-        Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, 150);
+        Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, Canvas->ClipY/5);
       }
     }
 ......

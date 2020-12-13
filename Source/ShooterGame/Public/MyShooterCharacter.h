@@ -9,6 +9,7 @@
 /**
  * 
  */
+
 UCLASS()
 class SHOOTERGAME_API AMyShooterCharacter : public AShooterCharacter
 {
@@ -20,6 +21,7 @@ public:
 
 	//Bind new actions to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
 
 #pragma region TELEPORT
 	//Function callable inside the blueprint
@@ -83,4 +85,19 @@ public:
 		virtual void ServerAddForce(FVector force);
 #pragma endregion
 
+#pragma region FREEZE GUN STATUS
+	//Property sent to everyone to replicate the stun state
+	UPROPERTY(Transient, Replicated)
+		uint8 bIsStun : 1;
+	
+	//Recovery time for stun state
+	float stunRecovery;
+	
+	//Useful function to enable and disable movement
+	void EnableMovement();
+	void DisableMovement();
+
+	UFUNCTION(reliable, server, WithValidation)
+		virtual void ServerSetMovement(bool bnewStun);
+#pragma endregion
 };

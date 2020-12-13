@@ -13,6 +13,9 @@
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/Pawn.h"
+#include "MyShooterWeapon.h"
+#include "Engine/EngineBaseTypes.h"
+#include "Kismet/KismetStringLibrary.h"
 
 AMyShooterCharacter::AMyShooterCharacter(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer.SetDefaultSubobjectClass <UMyShooterCharacterMovement>(ACharacter::CharacterMovementComponentName)) {
 	//Jetpack
@@ -25,10 +28,15 @@ AMyShooterCharacter::AMyShooterCharacter(const FObjectInitializer& ObjectInitial
 	WalljumpHorizontalStrenght = 1200;
 	WalljumpUpwardsStrenght = 1500;
 	WallJumpTraceDistance = 200;
+
+	//Freeze Gun
+	bIsStun = false;
+	stunRecovery = 20;
 }
 
 // Called to bind functionality to input
 void AMyShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
+	
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
 	PlayerInputComponent->BindAction("Jetpack", EInputEvent::IE_Pressed, this, &AMyShooterCharacter::StartJetpack);
@@ -36,6 +44,17 @@ void AMyShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInput
 
 	PlayerInputComponent->BindAction("WallJump", EInputEvent::IE_Pressed, this, &AMyShooterCharacter::WallJump);
 }
+
+//Takes care of replicating property
+void AMyShooterCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	// everyone except local owner: flag change is locally instigated
+	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsUsingJetpack, COND_SkipOwner);
+	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsStun, COND_SkipOwner);
+}
+
+
 
 #pragma region TELEPORT
 //////////////////////////////////////////////////
@@ -72,7 +91,7 @@ void AMyShooterCharacter::PersonalTeleport(FVector newDistance) {
 	if (MyPC && MyPC->IsGameInputAllowed() && GetCharacterMovement()->IsMovingOnGround()) {
 		FVector NewLocation = Impact.TraceEnd + newDistance;
 		MyPC->GetPawn()->SetActorLocation(NewLocation, true, nullptr, ETeleportType::TeleportPhysics);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Teleport"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Teleport"));
 	}
 }
 
@@ -88,13 +107,6 @@ bool AMyShooterCharacter::ServerShooterTeleport_Validate(FVector distance) {
 #pragma endregion
 
 #pragma region JETPACK FUNCTIONS
-//Takes care of replicating property
-void AMyShooterCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >& OutLifetimeProps) const {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	// everyone except local owner: flag change is locally instigated
-	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsUsingJetpack, COND_SkipOwner);
-}
 
 //////////////////////////////////////////////////
 //Start and Stop functions
@@ -231,4 +243,50 @@ void AMyShooterCharacter::ServerAddForce_Implementation(FVector force) {
 bool AMyShooterCharacter::ServerAddForce_Validate(FVector force) {
 	return true;
 }
+#pragma endregion
+
+#pragma region FREEZE GUN STATUS
+//Function to enable the movement of the character if hit with the freeze gun
+//Called by DisableIN, set movement mode to WALKING so the character can move again
+void AMyShooterCharacter::EnableMovement() {
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("MOVING"));
+	if (GetLocalRole() < ROLE_Authority) {
+		ServerSetMovement(false);
+	}
+	bIsStun = false;
+	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+}
+
+//Function to disable the movement of the character if hit with the freeze gun
+//Set movement mode to NONE so that character does not move
+//Ar the end of the timer, we call the function that enables the movement
+void AMyShooterCharacter::DisableMovement() {
+	// Debug Messag
+	if (GetLocalRole() < ROLE_Authority) {
+		ServerSetMovement(true);
+	}
+	bIsStun = true;
+	GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("STUN"));
+
+	//Timer for stun recovery
+	FTimerHandle TimerHandle;
+	FTimerDelegate inputDelegate = FTimerDelegate::CreateUObject(this, &AMyShooterCharacter::EnableMovement);
+	GetWorldTimerManager().SetTimer(TimerHandle, inputDelegate, stunRecovery, false);
+}
+
+//Server replication of stun variable
+bool AMyShooterCharacter::ServerSetMovement_Validate(bool bnewStun) {
+	return true;
+}
+
+void AMyShooterCharacter::ServerSetMovement_Implementation(bool bnewStun) {
+	bIsStun = bnewStun;	 
+}
+
+//void AMyShooterCharacter::OnRep_bIsStun() {
+//	onStunChar.Broadcast(bIsStun);
+//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(bIsStun));
+//}
 #pragma endregion

@@ -66,4 +66,4 @@ Inside **PlayerPawn** blueprint:
 
 Some HUD photos, in the first you can see the fuel indicator on the left and the new freeze gun, the second one shows the "stunned" state.
 
-<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/HUD.png" width="450"> <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="450">
+<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/HUD.png" width="500"> <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="500">

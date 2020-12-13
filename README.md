@@ -60,8 +60,10 @@ bool AShooterWeapon::CanFire() const {
                   && ( bPendingReload == false ) && (isPlayerStunned == false));
 }
 ```
-
-
 Inside **PlayerPawn** blueprint:
 
 <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/blueprint.PNG" width="900">
+
+Some HUD photos, in the first you can see the fuel indicator on the left and the new freeze gun, the second one shows the "stunned" state.
+
+<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/HUD.png" width="450"> <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="450">

@@ -65,6 +65,8 @@ class AShooterHUD : public AHUD
 
 public:
 
+	//void NotifyStun();
+	
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	/** Main HUD update loop. */
@@ -153,6 +155,9 @@ protected:
 
 	/** Darker HUD color. */
 	FColor HUDDark;
+
+	/** Purple HUD color. */
+	FColor HUDPurple;
 
 	/** When we got last notice about out of ammo. */
 	float NoAmmoNotifyTime;

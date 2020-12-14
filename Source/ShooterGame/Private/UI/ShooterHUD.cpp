@@ -17,6 +17,7 @@
 #include "Engine/Classes/GameFramework/Controller.h"
 #include "GameFramework/Character.h"
 #include "Engine/Classes/Engine/World.h"
+#include "Kismet/KismetStringLibrary.h"
 
 #define LOCTEXT_NAMESPACE "ShooterGame.HUD.Menu"
 
@@ -100,6 +101,9 @@ AShooterHUD::AShooterHUD(const FObjectInitializer& ObjectInitializer) : Super(Ob
 	HUDLight = FColor(175,202,213,255);
 	HUDDark = FColor(110,124,131,255);
 	ShadowedFont.bEnableShadow = true;
+
+	HUDPurple = FColor(99, 31, 110, 255);
+
 }
 
 void AShooterHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -492,12 +496,21 @@ void AShooterHUD::NotifyEnemyHit()
 	LastEnemyHitTime = GetWorld()->GetTimeSeconds();
 }
 
+//void AShooterHUD::NotifyStun() {
+//	//AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
+//	//if (sc && sc->IsAlive()) {
+//		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(sc->bIsStun));
+//		//if (sc->bIsStun) {
+//			Canvas->K2_DrawText(BigFont, "STUNNED", FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1), HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
+//		//}
+//	//}
+//}
+
 void AShooterHUD::DrawHUD()
 {
 #pragma region JETPACK
 	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
-	if (sc && sc->IsAlive())
-	{
+	if (sc && sc->IsAlive()){
 		// Get the movement component, and check if its the correct class
 		UMyShooterCharacterMovement* movecmp = Cast<UMyShooterCharacterMovement>(sc->GetMovementComponent());
 		if (movecmp) {
@@ -505,7 +518,8 @@ void AShooterHUD::DrawHUD()
 			int Energy = movecmp->Jetpackfuel / movecmp->JetpackMaxFuel * 100;
 
 			// and draw the number to the screen, left side.
-			Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, Canvas->ClipY/5);
+			//Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, Canvas->ClipY/5);
+			Canvas->K2_DrawText(BigFont, FString::FromInt(Energy), FVector2D(10, Canvas->ClipY / 5), FVector2D(1, 1), FLinearColor::Black, 0, HUDLight, FVector2D(5, 5), false, false, true, HUDLight);
 		}
 	}
 #pragma endregion
@@ -560,6 +574,7 @@ void AShooterHUD::DrawHUD()
 		Canvas->DrawItem( TileItem );
 		Canvas->ApplySafeZoneTransform();
 	}
+
 
 	// net mode
 	if (GetNetMode() != NM_Standalone)
@@ -940,6 +955,7 @@ void AShooterHUD::NotifyWeaponHit(float DamageTaken, struct FDamageEvent const& 
 	}
 	
 	LastHitTime = CurrentTime;
+
 }
 
 
@@ -962,6 +978,7 @@ void AShooterHUD::DrawHitIndicator()
 				ScaleUI);
 		}
 	}
+
 }
 
 void AShooterHUD::OnPlayerTalkingStateChanged(TSharedRef<const FUniqueNetId> TalkingPlayerId, bool bIsTalking)

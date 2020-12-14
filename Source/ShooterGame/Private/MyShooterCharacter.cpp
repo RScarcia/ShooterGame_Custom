@@ -16,6 +16,8 @@
 #include "MyShooterWeapon.h"
 #include "Engine/EngineBaseTypes.h"
 #include "Kismet/KismetStringLibrary.h"
+#include "ShooterHUD.h"
+#include "GameFramework/HUD.h"
 
 AMyShooterCharacter::AMyShooterCharacter(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer.SetDefaultSubobjectClass <UMyShooterCharacterMovement>(ACharacter::CharacterMovementComponentName)) {
 	//Jetpack
@@ -53,8 +55,6 @@ void AMyShooterCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsUsingJetpack, COND_SkipOwner);
 	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsStun, COND_SkipOwner);
 }
-
-
 
 #pragma region TELEPORT
 //////////////////////////////////////////////////
@@ -249,12 +249,12 @@ bool AMyShooterCharacter::ServerAddForce_Validate(FVector force) {
 //Function to enable the movement of the character if hit with the freeze gun
 //Called by DisableIN, set movement mode to WALKING so the character can move again
 void AMyShooterCharacter::EnableMovement() {
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("MOVING"));
 	if (GetLocalRole() < ROLE_Authority) {
 		ServerSetMovement(false);
 	}
 	bIsStun = false;
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("MOVING"));
 }
 
 //Function to disable the movement of the character if hit with the freeze gun
@@ -283,10 +283,10 @@ bool AMyShooterCharacter::ServerSetMovement_Validate(bool bnewStun) {
 
 void AMyShooterCharacter::ServerSetMovement_Implementation(bool bnewStun) {
 	bIsStun = bnewStun;	 
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(bIsStun));
 }
 
-//void AMyShooterCharacter::OnRep_bIsStun() {
-//	onStunChar.Broadcast(bIsStun);
-//	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(bIsStun));
-//}
+void AMyShooterCharacter::OnRep_bIsStun() {
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "STUNNED");
+}
 #pragma endregion

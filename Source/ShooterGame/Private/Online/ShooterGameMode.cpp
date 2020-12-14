@@ -10,6 +10,8 @@
 #include "Online/ShooterGameSession.h"
 #include "Bots/ShooterAIController.h"
 #include "ShooterTeamStart.h"
+#include "MyShooterHUD.h"
+#include "MyShooterPlayerController.h"
 
 
 AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
@@ -20,7 +22,9 @@ AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) 
 	static ConstructorHelpers::FClassFinder<APawn> BotPawnOb(TEXT("/Game/Blueprints/Pawns/BotPawn"));
 	BotPawnClass = BotPawnOb.Class;
 
+	//////////////////////////////////////////////
 	HUDClass = AShooterHUD::StaticClass();
+	/////////////////////////////////////////////
 	PlayerControllerClass = AShooterPlayerController::StaticClass();
 	PlayerStateClass = AShooterPlayerState::StaticClass();
 	SpectatorClass = AShooterSpectatorPawn::StaticClass();

@@ -41,7 +41,10 @@ bool AShooterWeapon::CanFire() const {
 	bool bStateOKToFire = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );
 	//////////////////////////////////
 	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(MyPawn);
-	bool isPlayerStunned = sc->bIsStun;
+	bool isPlayerStunned = false;
+	if (sc) {
+		isPlayerStunned = sc->bIsStun;
+	}
 	/////////////////////////////////
 	return (( bCanFire == true ) && ( bStateOKToFire == true )
                   && ( bPendingReload == false ) && (isPlayerStunned == false));

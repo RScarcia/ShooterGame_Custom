@@ -12,7 +12,6 @@ Added classes are:
 * **MyShooterCharacter** (.h and .cpp): extension of ShooterCharacter class, manages teleport, walljump, some functions of the jetpack feature and the "freeze" status.
 * **MyShooterCharacterMovement** (.h and .cpp): extension of ShooterCharacterMovement class, handles everything concerning the jetpack movement.
 * **MyShooterWeapon** (.h and .cpp): extension of ShooterWeapon_Instant class, handles the logic behind the freeze gun.
-* **MyShooterHUD** (.h and .cpp): extension of ShooterHUD class, draws the "freeze" status on HUD when Player is freezed.
 
 Some minor changes inside **ShooterHUD** class, to display the percentage of jetpack fuel.
 ```c++
@@ -35,18 +34,6 @@ void AShooterHUD::DrawHUD() {
 ......
 }
 ```
-Changed HUDClass inside **ShooterGameMode** class, to display the "stunned" state on the HUD.
-```c++
-AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
-.....
-.....
-  //////////////////////////////////////////////
-  HUDClass = AMyShooterHUD::StaticClass();
-  /////////////////////////////////////////////
-.....
-.....
-}
-```
 Inside **ShooterWeapon** class, CanFire() function has been modified to prevent the "stunned" player from firing.
 ```c++
 bool AShooterWeapon::CanFire() const {
@@ -63,7 +50,3 @@ bool AShooterWeapon::CanFire() const {
 Inside **PlayerPawn** blueprint:
 
 <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/blueprint.PNG" width="900">
-
-Some HUD photos, in the first you can see the fuel indicator on the left and the new freeze gun, the second one shows the "stunned" state.
-
-<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/HUD.png" width="500"> <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="500">

@@ -29,25 +29,15 @@ void AShooterHUD::DrawHUD() {
                             FLinearColor::Black, 0, HUDLight, FVector2D(5, 5),
                             false, false, true, HUDLight);
       }
+      
+      if (sc->bIsStun) {
+	Canvas->K2_DrawText(BigFont, "STUNNED",
+			    FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1),
+			    HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
+	}
     }
 ......
 ......
-}
-```
-Inside **ShooterWeapon** class, CanFire() function has been modified to prevent the "stunned" player from firing.
-```c++
-bool AShooterWeapon::CanFire() const {
-	bool bCanFire = MyPawn && MyPawn->CanFire();
-	bool bStateOKToFire = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );
-	//////////////////////////////////
-	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(MyPawn);
-	bool isPlayerStunned = false;
-	if (sc) {
-		isPlayerStunned = sc->bIsStun;
-	}
-	/////////////////////////////////
-	return (( bCanFire == true ) && ( bStateOKToFire == true )
-                  && ( bPendingReload == false ) && (isPlayerStunned == false));
 }
 ```
 Inside **PlayerPawn** blueprint:

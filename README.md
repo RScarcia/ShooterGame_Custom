@@ -13,7 +13,7 @@ Added classes are:
 * **MyShooterCharacterMovement** (.h and .cpp): extension of ShooterCharacterMovement class, handles everything concerning the jetpack movement.
 * **MyShooterWeapon** (.h and .cpp): extension of ShooterWeapon_Instant class, handles the logic behind the freeze gun.
 
-Some minor changes inside **ShooterHUD** class, to display the percentage of jetpack fuel.
+Some minor changes inside **ShooterHUD** class, to display the percentage of jetpack fuel and the STUN status.
 ```c++
 void AShooterHUD::DrawHUD() {
   AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());

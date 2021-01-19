@@ -87,11 +87,11 @@ public:
 
 #pragma region FREEZE GUN STATUS
 	//Property sent to everyone to replicate the stun state
-	UPROPERTY(Transient, ReplicatedUsing=OnRep_bIsStun)
+	UPROPERTY(Transient, Replicated)
 		uint8 bIsStun : 1;
 
-	UFUNCTION()
-		void OnRep_bIsStun();
+	/*UFUNCTION()
+		void OnRep_bIsStun();*/
 	
 	//Recovery time for stun state
 	float stunRecovery;

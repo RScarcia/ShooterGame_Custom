@@ -510,7 +510,7 @@ void AShooterHUD::DrawHUD()
 {
 #pragma region JETPACK
 	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetOwningPawn());
-	if (sc && sc->IsAlive()){
+	if (sc && sc->IsAlive()) {
 		// Get the movement component, and check if its the correct class
 		UMyShooterCharacterMovement* movecmp = Cast<UMyShooterCharacterMovement>(sc->GetMovementComponent());
 		if (movecmp) {
@@ -521,7 +521,14 @@ void AShooterHUD::DrawHUD()
 			//Canvas->DrawText(BigFont, FString::FromInt(Energy), 10, Canvas->ClipY/5);
 			Canvas->K2_DrawText(BigFont, FString::FromInt(Energy), FVector2D(10, Canvas->ClipY / 5), FVector2D(1, 1), FLinearColor::Black, 0, HUDLight, FVector2D(5, 5), false, false, true, HUDLight);
 		}
+
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(sc->bIsStun));
+		if (sc->bIsStun) {
+			Canvas->K2_DrawText(BigFont, "STUNNED", FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1), HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
+		}
+
 	}
+
 #pragma endregion
 
 	Super::DrawHUD();

@@ -6,7 +6,6 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/KismetStringLibrary.h"
 #include "ShooterHUD.h"
-#include "MyShooterHUD.h"
 
 void AMyShooterWeapon::FireWeapon() {
 	
@@ -174,7 +173,8 @@ void AMyShooterWeapon::DealStun(const FHitResult& Impact, const FVector& ShootDi
 	Impact.GetActor()->TakeDamage(PointDmg.Damage, PointDmg, MyPawn->Controller, this);
 
 	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(Impact.GetActor());
-	if (sc) {
+	if (sc && sc->IsAlive()) {
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, Impact.GetActor()->GetName());
 		sc->DisableMovement();
 	}
 }

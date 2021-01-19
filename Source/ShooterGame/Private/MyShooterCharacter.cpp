@@ -53,14 +53,14 @@ void AMyShooterCharacter::GetLifetimeReplicatedProps(TArray< FLifetimeProperty >
 
 	// everyone except local owner: flag change is locally instigated
 	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsUsingJetpack, COND_SkipOwner);
-	DOREPLIFETIME_CONDITION(AMyShooterCharacter, bIsStun, COND_SkipOwner);
+	DOREPLIFETIME(AMyShooterCharacter, bIsStun);
 }
 
 #pragma region TELEPORT
 //////////////////////////////////////////////////
 //Function exposed in blueprint
 void AMyShooterCharacter::ShooterTeleport(FVector teleportDistance) {
-	//If the distance setted in blueprint is not 0
+	//If the distance set in blueprint is not 0
 	if (teleportDistance != teleportDistance.ZeroVector) {
 		if (GetLocalRole() < ROLE_Authority) {
 			//Notify server with param
@@ -133,14 +133,14 @@ void AMyShooterCharacter::StopJetpack() {
 //Enable and Disable Jetpack. These functions manage the cool down of the jetpack
 void AMyShooterCharacter::EnableJetpack() {
 	// Debug Message
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("JetpackEnabled"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("JetpackEnabled"));
 	bIsJetpackEnabled = true;
 }
 
 //Called inside the movement component when the jetpack fuel is over. It sets a timer to re-enable the jetpack
 void AMyShooterCharacter::DisableJetpack() {
 	// Debug Message
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("JetpackDisabled"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("JetpackDisabled"));
 	bIsJetpackEnabled = false;
 
 	FTimerHandle TimerHandle;
@@ -222,7 +222,7 @@ void AMyShooterCharacter::WallJump() {
 				//notify server
 				ServerAddForce(HitNormal * WalljumpHorizontalStrenght + FVector::UpVector * WalljumpUpwardsStrenght);
 			}
-			//launch carachter
+			//launch character
 			LaunchCharacter(HitNormal * WalljumpHorizontalStrenght + FVector::UpVector * WalljumpUpwardsStrenght, false, true);
 		}
 	}
@@ -247,13 +247,14 @@ bool AMyShooterCharacter::ServerAddForce_Validate(FVector force) {
 
 #pragma region FREEZE GUN STATUS
 //Function to enable the movement of the character if hit with the freeze gun
-//Called by DisableIN, set movement mode to WALKING so the character can move again
+//Called by DisableMovement, set movement mode to WALKING so the character can move again
 void AMyShooterCharacter::EnableMovement() {
 	if (GetLocalRole() < ROLE_Authority) {
 		ServerSetMovement(false);
 	}
 	bIsStun = false;
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
+
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("MOVING"));
 }
 
@@ -261,14 +262,11 @@ void AMyShooterCharacter::EnableMovement() {
 //Set movement mode to NONE so that character does not move
 //Ar the end of the timer, we call the function that enables the movement
 void AMyShooterCharacter::DisableMovement() {
-	// Debug Messag
 	if (GetLocalRole() < ROLE_Authority) {
 		ServerSetMovement(true);
 	}
 	bIsStun = true;
 	GetCharacterMovement()->SetMovementMode(MOVE_None);
-
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("STUN"));
 
 	//Timer for stun recovery
 	FTimerHandle TimerHandle;
@@ -283,10 +281,9 @@ bool AMyShooterCharacter::ServerSetMovement_Validate(bool bnewStun) {
 
 void AMyShooterCharacter::ServerSetMovement_Implementation(bool bnewStun) {
 	bIsStun = bnewStun;	 
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(bIsStun));
 }
 
-void AMyShooterCharacter::OnRep_bIsStun() {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "STUNNED");
-}
+//void AMyShooterCharacter::OnRep_bIsStun() {
+//	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "STUNNED");
+//}
 #pragma endregion

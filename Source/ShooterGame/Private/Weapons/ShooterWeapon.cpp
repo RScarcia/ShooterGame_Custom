@@ -7,6 +7,7 @@
 #include "Bots/ShooterAIController.h"
 #include "Online/ShooterPlayerState.h"
 #include "UI/ShooterHUD.h"
+#include "MyShooterCharacter.h"
 
 AShooterWeapon::AShooterWeapon(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)
 {
@@ -250,30 +251,25 @@ void AShooterWeapon::StopFire()
 
 void AShooterWeapon::StartReload(bool bFromReplication)
 {
-	if (!bFromReplication && GetLocalRole() < ROLE_Authority)
-	{
+	if (!bFromReplication && GetLocalRole() < ROLE_Authority) {
 		ServerStartReload();
 	}
 
-	if (bFromReplication || CanReload())
-	{
+	if (bFromReplication || CanReload()) {
 		bPendingReload = true;
 		DetermineWeaponState();
 
-		float AnimDuration = PlayWeaponAnimation(ReloadAnim);		
-		if (AnimDuration <= 0.0f)
-		{
+		float AnimDuration = PlayWeaponAnimation(ReloadAnim);
+		if (AnimDuration <= 0.0f) {
 			AnimDuration = WeaponConfig.NoAnimReloadDuration;
 		}
 
 		GetWorldTimerManager().SetTimer(TimerHandle_StopReload, this, &AShooterWeapon::StopReload, AnimDuration, false);
-		if (GetLocalRole() == ROLE_Authority)
-		{
+		if (GetLocalRole() == ROLE_Authority) {
 			GetWorldTimerManager().SetTimer(TimerHandle_ReloadWeapon, this, &AShooterWeapon::ReloadWeapon, FMath::Max(0.1f, AnimDuration - 0.1f), false);
 		}
-		
-		if (MyPawn && MyPawn->IsLocallyControlled())
-		{
+
+		if (MyPawn && MyPawn->IsLocallyControlled()) {
 			PlayWeaponSound(ReloadSound);
 		}
 	}
@@ -340,7 +336,7 @@ void AShooterWeapon::ClientStartReload_Implementation()
 bool AShooterWeapon::CanFire() const
 {
 	bool bCanFire = MyPawn && MyPawn->CanFire();
-	bool bStateOKToFire = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );	
+	bool bStateOKToFire = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );
 	return (( bCanFire == true ) && ( bStateOKToFire == true ) && ( bPendingReload == false ));
 }
 
@@ -349,7 +345,7 @@ bool AShooterWeapon::CanReload() const
 	bool bCanReload = (!MyPawn || MyPawn->CanReload());
 	bool bGotAmmo = ( CurrentAmmoInClip < WeaponConfig.AmmoPerClip) && (CurrentAmmo - CurrentAmmoInClip > 0 || HasInfiniteClip());
 	bool bStateOKToReload = ( ( CurrentState ==  EWeaponState::Idle ) || ( CurrentState == EWeaponState::Firing) );
-	return ( ( bCanReload == true ) && ( bGotAmmo == true ) && ( bStateOKToReload == true) );	
+	return ( ( bCanReload == true ) && ( bGotAmmo == true ) && ( bStateOKToReload == true));
 }
 
 

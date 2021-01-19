@@ -10,8 +10,6 @@
 #include "Online/ShooterGameSession.h"
 #include "Bots/ShooterAIController.h"
 #include "ShooterTeamStart.h"
-#include "MyShooterHUD.h"
-#include "MyShooterPlayerController.h"
 
 
 AShooterGameMode::AShooterGameMode(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer)

@@ -524,7 +524,7 @@ void AShooterHUD::DrawHUD()
 
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, UKismetStringLibrary::Conv_BoolToString(sc->bIsStun));
 		if (sc->bIsStun) {
-			Canvas->K2_DrawText(BigFont, "STUNNED", FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1), HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
+			Canvas->K2_DrawText(BigFont, "STUN", FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1), HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
 		}
 
 	}

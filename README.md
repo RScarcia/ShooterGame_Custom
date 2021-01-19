@@ -40,6 +40,10 @@ void AShooterHUD::DrawHUD() {
 ......
 }
 ```
+Example of STUNNED status on HUD:
+
+<img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="900">
+
 Inside **PlayerPawn** blueprint:
 
 <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/blueprint.PNG" width="900">

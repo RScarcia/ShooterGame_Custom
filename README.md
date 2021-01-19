@@ -31,7 +31,7 @@ void AShooterHUD::DrawHUD() {
       }
       
       if (sc->bIsStun) {
-	Canvas->K2_DrawText(BigFont, "STUNNED",
+	Canvas->K2_DrawText(BigFont, "STUN",
 			    FVector2D(Canvas->ClipX / 2, Canvas->ClipY / 2), FVector2D(1, 1),
 			    HUDPurple, 0, HUDLight, FVector2D(5, 5), true, true, true, FLinearColor::White);
 	}
@@ -40,7 +40,7 @@ void AShooterHUD::DrawHUD() {
 ......
 }
 ```
-Example of STUNNED status on HUD:
+Example of STUN status on HUD:
 
 <img src="https://github.com/RScarcia/ShooterGame_Custom/blob/master/Images/stunned.png" width="900">
 

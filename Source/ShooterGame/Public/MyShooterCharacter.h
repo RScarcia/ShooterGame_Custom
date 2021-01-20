@@ -22,7 +22,6 @@ public:
 	//Bind new actions to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-
 #pragma region TELEPORT
 	//Function callable inside the blueprint
 	UFUNCTION(BlueprintCallable, Category = Teleport)

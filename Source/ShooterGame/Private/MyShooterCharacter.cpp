@@ -255,18 +255,28 @@ void AMyShooterCharacter::EnableMovement() {
 	bIsStun = false;
 	GetCharacterMovement()->SetMovementMode(MOVE_Walking);
 
+	/*AShooterPlayerController* MyPC = Cast<AShooterPlayerController>(Controller);
+	if (MyPC) {
+		EnableInput(MyPC);
+	}*/
+
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("MOVING"));
 }
 
 //Function to disable the movement of the character if hit with the freeze gun
-//Set movement mode to NONE so that character does not move
-//Ar the end of the timer, we call the function that enables the movement
+//Set movement mode to NONE so the character does not move
+//At the end of the timer, we call the function that enables the movement
 void AMyShooterCharacter::DisableMovement() {
 	if (GetLocalRole() < ROLE_Authority) {
 		ServerSetMovement(true);
 	}
 	bIsStun = true;
 	GetCharacterMovement()->SetMovementMode(MOVE_None);
+
+	/*AShooterPlayerController* MyPC = Cast<AShooterPlayerController>(Controller);
+	if (MyPC) {
+		
+	}*/
 
 	//Timer for stun recovery
 	FTimerHandle TimerHandle;

@@ -20,6 +20,7 @@ void AMyShooterWeapon::FireWeapon() {
 	const FVector EndTrace = StartTrace + ShootDir * InstantConfig.WeaponRange;
 
 	const FHitResult Impact = WeaponTrace(StartTrace, EndTrace);
+	
 	ProcessStunHit(Impact, StartTrace, ShootDir, RandomSeed, CurrentSpread);
 }
 
@@ -31,7 +32,7 @@ void AMyShooterWeapon::ServerNotifyStun_Implementation(const FHitResult& Impact,
 
 	const float WeaponAngleDot = FMath::Abs(FMath::Sin(ReticleSpread * PI / 180.f));
 	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(GetPawnOwner());
-
+	
 	// if we have an instigator, calculate dot between the view and the shot
 	if (sc->GetInstigator() && (Impact.GetActor() || Impact.bBlockingHit)) {
 		const FVector Origin = GetMuzzleLocation();
@@ -90,12 +91,12 @@ bool AMyShooterWeapon::ServerNotifyStunMiss_Validate(FVector_NetQuantizeNormal S
 
 void AMyShooterWeapon::ServerNotifyStunMiss_Implementation(FVector_NetQuantizeNormal ShootDir, int32 RandomSeed, float ReticleSpread) {
 	const FVector Origin = GetMuzzleLocation();
-
+	
 	// play FX on remote clients
 	HitNotify.Origin = Origin;
 	HitNotify.RandomSeed = RandomSeed;
 	HitNotify.ReticleSpread = ReticleSpread;
-
+	
 	// play FX locally
 	if (GetNetMode() != NM_DedicatedServer) {
 		const FVector EndTrace = Origin + ShootDir * InstantConfig.WeaponRange;

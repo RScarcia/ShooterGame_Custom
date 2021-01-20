@@ -9,6 +9,7 @@
 #include "Animation/AnimInstance.h"
 #include "Sound/SoundNodeLocalPlayer.h"
 #include "AudioThread.h"
+#include "MyShooterCharacter.h"
 
 static int32 NetVisualizeRelevancyTestPoints = 0;
 FAutoConsoleVariableRef CVarNetVisualizeRelevancyTestPoints(
@@ -699,12 +700,13 @@ void AShooterCharacter::SetCurrentWeapon(AShooterWeapon* NewWeapon, AShooterWeap
 
 void AShooterCharacter::StartWeaponFire()
 {
-	if (!bWantsToFire)
-	{
-		bWantsToFire = true;
-		if (CurrentWeapon)
-		{
-			CurrentWeapon->StartFire();
+	AMyShooterCharacter* sc = Cast<AMyShooterCharacter>(this);
+	if (sc && sc->bIsStun == false) {
+		if (!bWantsToFire) {
+			bWantsToFire = true;
+			if (CurrentWeapon) {
+				CurrentWeapon->StartFire();
+			}
 		}
 	}
 }

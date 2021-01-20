@@ -39,5 +39,4 @@ public:
 
 	/** check if weapon should deal damage to actor */
 	bool ShouldDealStun(AActor* TestActor) const;
-	
 };

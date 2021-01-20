@@ -3,10 +3,10 @@
 Custom version of UE4 Shooter Game example project, developed for a Multiplayer environment.
 
 New Features:
-* Teleport
-* Jetpack
-* WallJump
-* Freeze Gun
+* **Teleport**: by pressing the chosen key, you can teleport to a distance equal to that set in the blueprint. 
+* **Jetpack**: after jumping, pressing the chosen button activates the jetpack. The remaining fuel is displayed on the HUD.
+* **WallJump**: by jumping close to a wall, the player can perform a side jump.
+* **Freeze Gun**: hitting a player with this weapon blocks his movements and doesn't allow him to fire for a period of time.
 
 Added classes are:
 * **MyShooterCharacter** (.h and .cpp): extension of ShooterCharacter class, manages teleport, walljump, some functions of the jetpack feature and the "freeze" status.

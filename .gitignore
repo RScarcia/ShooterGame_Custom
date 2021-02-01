@@ -10,6 +10,12 @@
 /Saved/
 /Build/
 /Content/
+/Config/
+
+# UE4 Project files to ignore
+*.uproject
+*.sln
+ShooterGame_CUSTOM.png
 
 # User-specific files
 *.rsuser
